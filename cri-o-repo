@@ -18,3 +18,17 @@ EOF
 export VERSION=1.24
 export OS=CentOS_9_Stream
 sudo curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:${VERSION}/${OS}/devel:kubic:libcontainers:stable:cri-o:${VERSION}.repo
+#####################
+VERSION=1.24
+OS=CentOS_9
+ARCH=$(uname -m)
+
+sudo curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:${VERSION}.repo \
+https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:${VERSION}/${OS}/devel:kubic:libcontainers:stable:cri-o:${VERSION}.repo
+
+if [ $? -ne 0 ]; then
+  echo "Failed to download CRI-O repo file"
+  exit 1
+fi
+
+sudo dnf install -y cri-o
