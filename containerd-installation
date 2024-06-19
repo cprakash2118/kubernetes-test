@@ -20,12 +20,14 @@ Install Docker Engine on CentOS
 ### Install Container Engine - containerd
 # yum install containerd.io 
 
-#  systemctl start docker
-#  docker run hello-world   [This to very the docker setup ]
-#  docker ps ; docker exec -it hello-world /bin/bash   [ access simple container ]
-
-
-#vim 
+#vim  /etc/containerd/config.toml
 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
     SystemdCgroup = true
+
+#  systemctl enable --now containerd 
+#  systemctl restart containerd
+#  systemctl status containerd
+
+# yum install kubeadm kubelet kubectl 
+# Join command to add worker nodes to master node.
