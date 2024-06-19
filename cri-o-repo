@@ -52,3 +52,33 @@ sha256sum -c cri-o-${VERSION}.0-1.${ARCH}.rpm.sha256
 
 # Install the RPM files
 sudo dnf install -y cri-o-${VERSION}.0-1.${ARCH}.rpm cri-tools-${VERSION}.0-1.${ARCH}.rpm
+
+#########################################
+# Set Variables
+VERSION=1.24
+OS=CentOS_9
+ARCH=$(uname -m)
+
+# Create a directory to store the RPMs
+mkdir -p ~/cri-o-rpms
+cd ~/cri-o-rpms
+
+# Download the RPM files
+curl -LO https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/${VERSION}/${OS}/${ARCH}/cri-o-${VERSION}.0-1.${ARCH}.rpm
+curl -LO https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/${VERSION}/${OS}/${ARCH}/cri-o-${VERSION}.0-1.${ARCH}.rpm.sha256
+curl -LO https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/${VERSION}/${OS}/${ARCH}/cri-tools-${VERSION}.0-1.${ARCH}.rpm
+
+# Extract and Compute SHA256 Hash
+SHA256_HASH=$(cut -d' ' -f1 cri-o-${VERSION}.0-1.${ARCH}.rpm.sha256)
+COMPUTED_HASH=$(sha256sum cri-o-${VERSION}.0-1.${ARCH}.rpm | cut -d' ' -f1)
+
+# Verify Checksum
+if [ "$SHA256_HASH" == "$COMPUTED_HASH" ]; then
+    echo "Checksum verified successfully."
+    # Install the RPM files
+    sudo dnf install -y cri-o-${VERSION}.0-1.${ARCH}.rpm cri-tools-${VERSION}.0-1.${ARCH}.rpm
+else
+    echo "Checksum verification failed. Aborting installation."
+    exit 1
+fi
+
