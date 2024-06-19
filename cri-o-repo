@@ -1,0 +1,15 @@
+sudo tee /etc/yum.repos.d/crio.repo <<EOF
+[devel_kubic_libcontainers_stable]
+name=devel:kubic:libcontainers:stable
+baseurl=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/
+gpgcheck=1
+gpgkey=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/repodata/repomd.xml.key
+enabled=1
+
+[devel_kubic_libcontainers_stable_cri-o_$VERSION]
+name=devel:kubic:libcontainers:stable:cri-o:$VERSION
+baseurl=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VERSION/$OS/
+gpgcheck=1
+gpgkey=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VERSION/$OS/repodata/repomd.xml.key
+enabled=1
+EOF
