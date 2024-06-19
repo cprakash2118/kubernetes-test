@@ -1,0 +1,31 @@
+Install Docker Engine on CentOS
+
+-Uninstall old versions
+# yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+
+- Check and verify [ must be empty ] - /var/lib/docker/ 
+
+### Installation methods 
+- Install using the rpm repository (Set up the repository)
+# sudo yum install -y yum-utils
+# sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+### Install Container Engine - containerd
+# yum install containerd.io 
+
+#  systemctl start docker
+#  docker run hello-world   [This to very the docker setup ]
+#  docker ps ; docker exec -it hello-world /bin/bash   [ access simple container ]
+
+
+#vim 
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    SystemdCgroup = true
