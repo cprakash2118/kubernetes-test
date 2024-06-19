@@ -32,3 +32,23 @@ if [ $? -ne 0 ]; then
 fi
 
 sudo dnf install -y cri-o
+
+###################################################
+VERSION=1.24
+OS=CentOS_9
+ARCH=$(uname -m)
+
+# Create a directory to store the RPMs
+mkdir -p ~/cri-o-rpms
+cd ~/cri-o-rpms
+
+# Download the RPM files
+curl -LO https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/${VERSION}/${OS}/${ARCH}/cri-o-${VERSION}.0-1.${ARCH}.rpm
+curl -LO https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/${VERSION}/${OS}/${ARCH}/cri-o-${VERSION}.0-1.${ARCH}.rpm.sha256
+curl -LO https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/${VERSION}/${OS}/${ARCH}/cri-tools-${VERSION}.0-1.${ARCH}.rpm
+
+# Verify the checksum
+sha256sum -c cri-o-${VERSION}.0-1.${ARCH}.rpm.sha256
+
+# Install the RPM files
+sudo dnf install -y cri-o-${VERSION}.0-1.${ARCH}.rpm cri-tools-${VERSION}.0-1.${ARCH}.rpm
