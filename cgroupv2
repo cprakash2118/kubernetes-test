@@ -1,0 +1,26 @@
+sudo mkdir -p /etc/containerd
+sudo containerd config default > /etc/containerd/config.toml
+
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+   SystemdCgroup = true
+
+sudo systemctl restart containerd
+sudo systemctl status containerd
+
+
+/var/lib/kubelet/kubeadm-flags.env
+
+KUBELET_KUBEADM_ARGS="--container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock --runtime-cgroups=/system.slice/containerd.service --kubelet-cgroups=/system.slice/kubelet.service --cgroup-driver=systemd --network-plugin=cni --pod-infra-container-image=k8s.gcr.io/pause:3.6"
+
+
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+sudo systemctl status kubelet
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+
