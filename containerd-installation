@@ -1,3 +1,45 @@
+version = 2
+
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    # Enable the CRI plugin
+    sandbox_image = "k8s.gcr.io/pause:3.5"
+
+    # Configure cgroup driver
+    [plugins."io.containerd.grpc.v1.cri".containerd]
+      snapshotter = "overlayfs"
+      default_runtime_name = "runc"
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+          runtime_type = "io.containerd.runc.v2"
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            SystemdCgroup = true
+
+    # CNI settings
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "/opt/cni/bin"
+      conf_dir = "/etc/cni/net.d"
+
+    # Registry settings
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+          endpoint = ["https://registry-1.docker.io"]
+
+[debug]
+  level = "info"
+
+[metrics]
+  address = "127.0.0.1:1338"
+  grpc_histogram = false
+
+[proxy_plugins]
+[stream_processors]
+[timeouts]
+[ttrpc]
+
+
+##################
 [plugins."io.containerd.grpc.v1.cri"]
   [plugins."io.containerd.grpc.v1.cri".containerd]
     snapshotter = "overlayfs"
