@@ -1,4 +1,24 @@
+sudo modprobe br_netfilter
+sudo modprobe ip_vs
+sudo modprobe ip_vs_rr
+sudo modprobe ip_vs_wrr
+sudo modprobe ip_vs_sh
+sudo modprobe overlay
 
+###
+cat > /etc/modules-load.d/kubernetes.conf << EOF
+br_netfilter
+ip_vs
+ip_vs_rr
+ip_vs_wrr
+ip_vs_sh
+overlay
+EOF
+
+##
+
+#############################################################################
+#########
 sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
 ###############
