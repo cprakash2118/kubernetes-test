@@ -1,3 +1,12 @@
+sudo mkdir -p /etc/systemd/system/kubelet.service.d
+cat <<EOF | sudo tee /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock --cgroup-driver=systemd --cgroup-root=/"
+EOF
+
+
+
+#################################
 version = 2
 
 [plugins]
